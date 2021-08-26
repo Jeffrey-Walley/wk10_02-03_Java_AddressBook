@@ -2,10 +2,8 @@ package controller;
 
 import model.AddressBookModel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 import static view.AddressBookView.display;
 
@@ -13,9 +11,10 @@ public class AddressBookController {
     public static void main(String[] args) {
 
         int userInput;
-        int options[] = {0, 1, 2, 3, 4, 5};
-        String description[] = {"Add Record", "Remove Email", "Search for Record",
+        int[] options= {0, 1, 2, 3, 4, 5};
+        String[] description = {"Add Record", "Remove Email", "Search for Record",
                 "Print Record", "Delete ALL", "End Program and Return to Your Life"};
+        ArrayList<AddressBookModel> contacts = new ArrayList<>(Arrays.asList());
 
         do {                        // start that loop -- til break below
             // Display Options to user:
@@ -29,19 +28,19 @@ public class AddressBookController {
             //check input using 'switch'
             switch (userInput) {
                 case 1:
-                    addRecord();
+                    addRecord(contacts);
                     break;
                 case 2:
-                    removeRecord();
+                    removeRecord(contacts);
                     break;
                 case 3:
-                    searchRecord();
+                    searchRecord(contacts);
                     break;
                 case 4:
-                    printRecord();
+                    printRecord(contacts);
                     break;
                 case 5:
-                    printRecord();
+                    deleteRecord();
                     break;
                 case 6:
                     endApp();
@@ -56,8 +55,7 @@ public class AddressBookController {
 // METHODS -- this is where the action happens
 
     // add a record to the AddressBookModel Object Array
-    public static void addRecord() {
-        ArrayList<AddressBookModel> contacts = new ArrayList<>();
+    public static void addRecord(ArrayList<> contacts) {
         System.out.println("enter the First Name for the new record: ");
         Scanner scanny = new Scanner(System.in);
         String firstName = scanny.nextLine();
@@ -68,16 +66,17 @@ public class AddressBookController {
         System.out.println("enter an Email address: ");
         String email = scanny.nextLine();
         contacts.add(new AddressBookModel(firstName, lastName, phoneNumber, email));
-        System.out.println("new record added successfully: \n" + contacts);
+        // using stream
+        contacts.forEach(System.out::println);
     }
 
-    public static void removeRecord() {
-        ArrayList<AddressBookModel> removeRecord = new ArrayList<>();
+    public static void removeRecord(ArrayList<> contacts) {
+
         System.out.println("\nHere is the current Contact List: ");
         System.out.println("\nWhich Email would you like to Remove? ");
         Scanner scanny = new Scanner(System.in);
         String emailRemove = scanny.nextLine();
-        removeRecord.remove(emailRemove);
+        contacts.remove(emailRemove);
         System.out.println("\nYou have removed this email from the records: " + emailRemove );
         /*
         Iterator remove = AddressBookModel.iterator();
@@ -87,22 +86,56 @@ public class AddressBookController {
                 remove.remove();*/
     }
 
-    public static void searchRecord() {
+    public static void searchRecord(ArrayList<> contacts) {
         System.out.println("\n Input data to Search for: ");
-        Scanner scanny = new Scanner(System.in);
-        String search = scanny.nextLine();
+        Scanner userSearch = new Scanner(System.in);
+        String search = userSearch.nextLine();
 
-                System.out.println(search);
+    // need to iterate through the array that we've created and match value
+       //for(int i = 0; i < contacts.size(); i++) {
+        //  if(search = )
+       //   System.out.println(search);
 
     }
 
-    public static void printRecord() {
+    public static void printRecord(ArrayList<> contacts) {
+        // print chosen record
         System.out.println("print");
+        BufferedWriter bw = null;
+        try {
+            File printRecord = new File("printRecord.txt");
+            FileOutputStream fos = new FileOutputStream(printRecord);
+
+            bw = new BufferedWriter(new OutputStreamWriter(fos));
+
+            for (String text : contacts) {
+                bw.write(text);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("handle this exception");
+        } finally {
+            try {
+                bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public static void deleteRecord() {
+        System.out.println("\n Are you certain that you want to CLEAR all Records? ('y'/'n')");
+        Scanner userDelete = new Scanner(System.in);
+       /* if(userDelete == "y") {
+            AddressBookModel.removeAll(AddressBookModel);
+        } else {
+            break;*/
+
+        // Delete entire array -- delete all records
         System.out.println("delete");
-    }
+        };
+
     public static void endApp() {
         System.out.println("\n I hope you have found what you desire. Have a wonderful Day");
     }

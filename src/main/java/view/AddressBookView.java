@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class AddressBookView {
 
-    public static void display(int options[], String description[]){
+    public static void display(int[] options, String[] description{
         // Display Options to user:
         System.out.println("\n\nWalley Works Address Book Java App");
         System.out.println("----------------------------------");
