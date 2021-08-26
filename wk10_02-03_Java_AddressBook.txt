@@ -1,0 +1,17 @@
+entry's in the Model class
+
+oh boy -- making an app without anyone holding my hand?
+https://www.youtube.com/watch?v=Y3uLVSQNDGw
+
+1. display user options and get input
+	addRecord
+	removeRecord
+	searchRecord
+	printRecord
+	deleteRecord
+	end
+
+2. Record entries need this format: private first, last, phone, email
+
+
+https://youtu.be/Sdn8SNYyjxc
